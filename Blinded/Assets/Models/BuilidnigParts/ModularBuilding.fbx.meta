@@ -3,7 +3,52 @@ guid: c3628b4fa5fdebf44aaf3ca62405b077
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ButtonLight_Mat
+    second: {fileID: 2100000, guid: 4567671a98c320241aa721d4b8459953, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DoorFrame_Mat
+    second: {fileID: 2100000, guid: 13ec051345e65f04391eca87aec1570c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DoorHandle_Mat
+    second: {fileID: 2100000, guid: 4b4378db7a0b8ee41bbbe6aae93107be, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DoorMain_Mat
+    second: {fileID: 2100000, guid: 14bc135994b4e924b8a1d8e9fd805226, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DoorSecondary_Mat
+    second: {fileID: 2100000, guid: ec4fdb5c5928842409906df9414fd092, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metalic_Mat
+    second: {fileID: 2100000, guid: 39accc94b55369848a5ee0ddc3d6e8fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SkirtingBoard_Material
+    second: {fileID: 2100000, guid: fa43b47efcaa47b41a4fb23af3de2214, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WallPaper_Material
+    second: {fileID: 2100000, guid: db32a6c143e59344d82f85dc887f3891, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Window_Mat
+    second: {fileID: 2100000, guid: b243ed37edc9e0041b75bb649e282af4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -88,7 +133,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.0032
+    globalScale: 0.32
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

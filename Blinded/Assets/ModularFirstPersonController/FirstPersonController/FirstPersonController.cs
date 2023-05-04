@@ -314,7 +314,7 @@ public class FirstPersonController : MonoBehaviour
                 sprintCooldown = sprintCooldownReset;
             }
 
-            Debug.Log("sprintCooldown = " + sprintCooldown);
+           // Debug.Log("sprintCooldown = " + sprintCooldown);
             
             // Handles sprintBar 
             if(useSprintBar && !unlimitedSprint)

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class CallInteraction : MonoBehaviour
 {
-    [SerializeField] private GameObject scriptHolderObj;
+    [SerializeField] private DoorToggle scriptHolderObj;
+    
     public void Interact()
     {
         scriptHolderObj.BroadcastMessage("ToggleInteraction");
     }
+    
 }

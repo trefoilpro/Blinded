@@ -5,11 +5,11 @@ using UnityEngine;
 public class CheckForInteractions : MonoBehaviour
 {
     [SerializeField] private int _interactionRange;
-    [SerializeField] private KeyCode interactionKey = KeyCode.E;
+    [SerializeField] private KeyCode _interactionKey = KeyCode.E;
 
     private void Update()
     {
-        if (Input.GetKeyDown(interactionKey)) ReyCheck();
+        if (Input.GetKeyDown(_interactionKey)) ReyCheck();
     }
 
     private void ReyCheck()

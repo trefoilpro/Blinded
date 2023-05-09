@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerMovementAnimation : MonoBehaviour
 {
+    [SerializeField] private Animator _playerAnimator;
+    [SerializeField] private DataAnimations _playerAnimations;
+    
     public enum TypesOfMovement
     {
         Idle,
@@ -14,8 +17,6 @@ public class PlayerMovementAnimation : MonoBehaviour
 
     private TypesOfMovement _playerMovementType = TypesOfMovement.Idle;
     
-    [SerializeField] private Animator _playerAnimator;
-    [SerializeField] private DataAnimations _playerAnimations;
 
     public void SetPlayerAnimation(TypesOfMovement typesOfMovement)
     {

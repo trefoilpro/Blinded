@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,24 +8,29 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
 {
     [SerializeField] private EnemyAnimations _enemyAnimations;
     [SerializeField] private NavMeshAgent _navMeshAgent;
-    [SerializeField] private float viewRadius = 15f;
-    [SerializeField] private float viewAngle = 90f;
-    [SerializeField] private LayerMask playerMask;
-    [SerializeField] private LayerMask obstacleMask;
-    [SerializeField] private Transform[] wayPoints;
+    [SerializeField] private float _speedWalk;
+    [SerializeField] private float _speedRun;
+    [SerializeField] private float _viewRadius;
+    [SerializeField] private float _viewAngle;
+    [SerializeField] private LayerMask _playerMask;
+    [SerializeField] private LayerMask _obstacleMask;
+    [SerializeField] private Transform[] _wayPoints;
 
-    private float startWaitTime = 0.5f;
-    private float speedWalk = 6f;
-    private float speedRun = 9f;
 
-    private float meshResolution = 1f;
-    private int edgeIterations = 4;
-    private float edgeDistance = 0.5f;
+    private float _distanceToFeelPlayer = 10f;
+    private float _timeToFeelPlayer = 3f;
+    
+    private float _waitTimeOnPatrolPoint = 2f;
+    private float _waitTimeAfterLostPlayer = 5f;
+    private float _meshResolution = 1f;
+    private int _edgeIterations = 4;
+    private float _edgeDistance = 0.5f; 
 
     private int m_СurrentWayPointIndex;
 
     private Vector3 m_PlayerPosition;
-    private float m_WaitTime;
+    private float m_WaitTimeOnPatrolPoint;
+    private float m_WaitTimeAfterLostPlayer;
     private bool m_IsPatrol;
     private bool m_CaughtPlayer;
 
@@ -34,13 +40,14 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
         m_PlayerPosition = Vector3.zero;
         m_IsPatrol = true;
         m_CaughtPlayer = false;
-        m_WaitTime = startWaitTime;
+        m_WaitTimeOnPatrolPoint = _waitTimeOnPatrolPoint;
+        m_WaitTimeAfterLostPlayer = _waitTimeAfterLostPlayer;
 
         m_СurrentWayPointIndex = 0;
 
         _navMeshAgent.isStopped = false;
-        _navMeshAgent.speed = speedWalk;
-        _navMeshAgent.SetDestination(wayPoints[m_СurrentWayPointIndex].position);
+        _navMeshAgent.speed = _speedWalk;
+        _navMeshAgent.SetDestination(_wayPoints[m_СurrentWayPointIndex].position);
     }
 
     private void Update()
@@ -62,54 +69,57 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
     {
         if (!m_CaughtPlayer)
         {
-            Run(speedRun);
+            Run(_speedRun);
             _navMeshAgent.SetDestination(m_PlayerPosition);
         }
-
+        
+        
+        Debug.Log("_navMeshAgent.remainingDistance = " + _navMeshAgent.remainingDistance + " _navMeshAgent.stoppingDistance = " + _navMeshAgent.stoppingDistance);
         if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
         {
             Debug.Log("_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance");
-            if (m_WaitTime <= 0 && !m_CaughtPlayer && Vector3.Distance(transform.position,
-                    Player.Instance.gameObject.transform.position) >= 6f)
+            if (m_WaitTimeAfterLostPlayer <= 0 && !m_CaughtPlayer)
             {
                 m_IsPatrol = true;
-                Run(speedWalk);
-                m_WaitTime = startWaitTime;
-                _navMeshAgent.SetDestination(wayPoints[m_СurrentWayPointIndex].position);
+                Move(_speedWalk);
+                m_WaitTimeAfterLostPlayer = _waitTimeAfterLostPlayer;
+                _navMeshAgent.SetDestination(_wayPoints[m_СurrentWayPointIndex].position);
             }
             else
             {
                 if (Vector3.Distance(transform.position,
                         Player.Instance.gameObject.transform.position) >= 2.5f)
                     Stop();
-                m_WaitTime -= Time.deltaTime;
+                m_WaitTimeAfterLostPlayer -= Time.deltaTime;
             }
+            
+            Debug.Log("m_WaitTime = " + m_WaitTimeAfterLostPlayer);
         }
     }
 
     private void Patroling()
     {
-        _navMeshAgent.SetDestination(wayPoints[m_СurrentWayPointIndex].position);
+        _navMeshAgent.SetDestination(_wayPoints[m_СurrentWayPointIndex].position);
         if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
         {
-            if (m_WaitTime <= 0)
+            if (m_WaitTimeOnPatrolPoint <= 0)
             {
                 NextPoint();
-                Move(speedWalk);
-                m_WaitTime = startWaitTime;
+                Move(_speedWalk);
+                m_WaitTimeOnPatrolPoint = _waitTimeOnPatrolPoint;
             }
             else
             {
                 Stop();
-                m_WaitTime -= Time.deltaTime;
+                m_WaitTimeOnPatrolPoint -= Time.deltaTime;
             }
         }
     }
 
     public void NextPoint()
     {
-        m_СurrentWayPointIndex = (m_СurrentWayPointIndex + 1) % wayPoints.Length;
-        _navMeshAgent.SetDestination(wayPoints[m_СurrentWayPointIndex].position);
+        m_СurrentWayPointIndex = (m_СurrentWayPointIndex + 1) % _wayPoints.Length;
+        _navMeshAgent.SetDestination(_wayPoints[m_СurrentWayPointIndex].position);
     }
 
     void Stop()
@@ -135,16 +145,24 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
 
     private void EnviromentView()
     {
-        Collider[] playerInRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);
+        Collider[] playerInRange = Physics.OverlapSphere(transform.position, _viewRadius, _playerMask);
 
         for (int i = 0; i < playerInRange.Length; i++)
         {
             Transform player = playerInRange[i].transform;
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
-            if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
+            float dstToPlayer = Vector3.Distance(transform.position, player.position);
+            
+            if (Vector3.Angle(transform.forward, dirToPlayer) < _viewAngle / 2)
             {
-                float dstToPlayer = Vector3.Distance(transform.position, player.position);
-                if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask))
+                if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, _obstacleMask))
+                {
+                    m_IsPatrol = false;
+                }
+            }
+            else if (dstToPlayer <= _distanceToFeelPlayer)
+            {
+                if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, _obstacleMask))
                 {
                     m_IsPatrol = false;
                 }
@@ -154,6 +172,14 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
             {
                 m_PlayerPosition = player.position;
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Player.Instance.PlayDeathAnimation();
         }
     }
 }

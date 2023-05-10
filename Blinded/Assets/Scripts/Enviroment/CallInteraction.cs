@@ -1,14 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CallInteraction : MonoBehaviour
 {
-    [SerializeField] private DoorToggle scriptHolderObj;
-    
+    public event EventHandler OnInteractionWithObject;
+    //[SerializeField] private GameObject scriptHolderObj;
+
     public void Interact()
     {
-        scriptHolderObj.BroadcastMessage("ToggleInteraction");
+        OnInteractionWithObject?.Invoke(this, EventArgs.Empty);
+        Debug.Log("Interact");
     }
+    
+    
+    
+    /*public void Interact()
+    {
+        scriptHolderObj.BroadcastMessage("ToggleInteraction");
+    }*/
     
 }

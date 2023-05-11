@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class CallInteraction : MonoBehaviour
     {
         OnInteractionWithObject?.Invoke(this, EventArgs.Empty);
         Debug.Log("Interact");
+        
     }
     
     

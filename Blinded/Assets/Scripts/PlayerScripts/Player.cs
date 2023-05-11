@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,7 +7,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Collider _playerCollider;
     [SerializeField] private Rigidbody _playerRigidbody;
     [SerializeField] private PlayerMovementAnimation _playerMovementAnimation;
+    
     private Vector3 _startPlayerPosition;
+    
     public bool IsHidden { get; private set; } = false;
 
     private void Awake()
@@ -39,7 +38,6 @@ public class Player : MonoBehaviour
             _playerCollider.enabled = !IsHidden;
             _playerRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
         }
-        
     }
 
     public void PlayDeathAnimation()

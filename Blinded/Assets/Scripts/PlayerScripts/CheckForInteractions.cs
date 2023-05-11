@@ -14,11 +14,7 @@ public class CheckForInteractions : MonoBehaviour
 
     private void ReyCheck()
     {
-        if (Player.Instance.IsHidden)
-        {
-            Player.Instance.SetHidden();
-            return;
-        }
+        
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit , _interactionRange))
         {

@@ -13,7 +13,6 @@ public class CallInteraction : MonoBehaviour
     {
         OnInteractionWithObject?.Invoke(this, EventArgs.Empty);
         Debug.Log("Interact");
-        
     }
     
     

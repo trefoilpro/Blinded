@@ -197,7 +197,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7031bdee2645aa49bfd26c856352e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptHolderObj: {fileID: 2166257538180373437}
 --- !u!1 &2166257538180373427
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,6 +264,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorAnimator: {fileID: 2166257538180373438}
+  _callInteractionObjectsList:
+  - {fileID: 2166257537091277091}
 --- !u!1 &2166257538217802598
 GameObject:
   m_ObjectHideFlags: 0

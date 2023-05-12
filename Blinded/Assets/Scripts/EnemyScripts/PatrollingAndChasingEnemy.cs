@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class PatrollingAndChasingEnemy : MonoBehaviour
 {
+    [SerializeField] private RoomConductor _roomConductor;
     [SerializeField] private EnemyAnimations _enemyAnimations;
     [SerializeField] private NavMeshAgent _navMeshAgent;
     [SerializeField] private float _speedWalk;
@@ -37,6 +38,7 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
 
     private void Start()
     {
+        
         m_PlayerPosition = Vector3.zero;
         m_IsPatrol = true;
         m_CaughtPlayer = false;

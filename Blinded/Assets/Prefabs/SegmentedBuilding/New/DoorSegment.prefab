@@ -131,6 +131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorAnimator: {fileID: 7066122062620648927}
+  _callInteractionObjectsList:
+  - {fileID: 8717324206451000477}
 --- !u!95 &7066122062620648927
 Animator:
   serializedVersion: 4

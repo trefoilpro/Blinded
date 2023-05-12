@@ -10,7 +10,7 @@ public class Room : MonoBehaviour
 
     private void Start()
     {
-        throw new NotImplementedException();
+        
     }
     
     

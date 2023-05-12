@@ -19,9 +19,9 @@ public class CheckForInteractions : MonoBehaviour
         if(Physics.Raycast(transform.position, transform.forward, out hit , _interactionRange))
         {
             GameObject reciverObject = hit.collider.gameObject;
-            if (reciverObject.CompareTag("Interactable"))
+            if (reciverObject.TryGetComponent(out CallInteraction call))
             {
-                reciverObject.GetComponent<CallInteraction>().Interact();
+                call.Interact();
             }
         }
     }

@@ -24,4 +24,10 @@ public class DoorToggle : MonoBehaviour
 
         doorAnimator.SetBool("isOpen", IsOpened);
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, 5));
+    }
 }

@@ -3,8 +3,9 @@ using UnityEngine;
 public class DoorToggle : MonoBehaviour
 {
     [SerializeField] private Animator doorAnimator;
+    [SerializeField] private Room _room;
 
-    public bool _isOpened { get; private set; } = false;
+    public bool IsOpened { get; private set; } = false;
     
 
     public void ToggleInteraction()
@@ -13,9 +14,14 @@ public class DoorToggle : MonoBehaviour
     }
     private void ToggleDoorState()
     {
-        if (_isOpened) _isOpened = false;
-        else _isOpened = true;
+        if (IsOpened) IsOpened = false;
+        else IsOpened = true;
 
-        doorAnimator.SetBool("isOpen", _isOpened);
+        if (_room != null)
+        {
+            _room.OnDoorChange();
+        }
+
+        doorAnimator.SetBool("isOpen", IsOpened);
     }
 }

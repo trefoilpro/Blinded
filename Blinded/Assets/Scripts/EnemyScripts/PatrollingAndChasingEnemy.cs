@@ -20,12 +20,12 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
 
     private float _distanceToFeelPlayer = 10f;
     private float _timeToFeelPlayer = 3f;
-    
+
     private float _waitTimeOnPatrolPoint = 2f;
     private float _waitTimeAfterLostPlayer = 5f;
     private float _meshResolution = 1f;
     private int _edgeIterations = 4;
-    private float _edgeDistance = 0.5f; 
+    private float _edgeDistance = 0.5f;
 
     private int m_СurrentWayPointIndex;
 
@@ -36,9 +36,32 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
     private bool m_CaughtPlayer;
 
 
+    private void Awake()
+    {
+        _roomConductor.RemakeMonstersEnviromentView += ChangeLayoutsVisibility;
+    }
+
+    private void OnDisable()
+    {
+        _roomConductor.RemakeMonstersEnviromentView -= ChangeLayoutsVisibility;
+    }
+
+    private void ChangeLayoutsVisibility(bool canSeeThroughWalls)
+    {
+        if (canSeeThroughWalls && (_obstacleMask & (1 << LayerMask.NameToLayer("ClosedRoomWalls"))) != 0)
+        {
+            Debug.Log("ChangeLayoutsVisibility to " + "Add ClosedRoomWalls");
+            _obstacleMask &= ~(1 << LayerMask.NameToLayer("ClosedRoomWalls"));
+        }
+        else if (!canSeeThroughWalls && (_obstacleMask & (1 << LayerMask.NameToLayer("ClosedRoomWalls"))) == 0)
+        {
+            Debug.Log("ChangeLayoutsVisibility to " + "Remove ClosedRoomWalls");
+            _obstacleMask |= 1 << LayerMask.NameToLayer("ClosedRoomWalls");
+        }
+    }
+
     private void Start()
     {
-        
         m_PlayerPosition = Vector3.zero;
         m_IsPatrol = true;
         m_CaughtPlayer = false;
@@ -71,17 +94,16 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
     {
         Vector3 dirToPlayer = (Player.Instance.transform.position - transform.position).normalized;
         float dstToPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
-        
+
         if (!m_CaughtPlayer && !Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, _obstacleMask))
         {
             Run(_speedRun);
             _navMeshAgent.SetDestination(m_PlayerPosition);
         }
-        
-        
-        
+
+
         //Debug.Log("_navMeshAgent.remainingDistance = " + _navMeshAgent.remainingDistance + " _navMeshAgent.stoppingDistance = " + _navMeshAgent.stoppingDistance);
-        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance )
+        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
         {
             //Debug.Log("_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance");
             if (m_WaitTimeAfterLostPlayer <= 0 && !m_CaughtPlayer)
@@ -98,7 +120,7 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
                     Stop();*/
                 m_WaitTimeAfterLostPlayer -= Time.deltaTime;
             }
-            
+
             Debug.Log("m_WaitTime = " + m_WaitTimeAfterLostPlayer);
         }
     }
@@ -158,7 +180,7 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
             Transform player = playerInRange[i].transform;
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
             float dstToPlayer = Vector3.Distance(transform.position, player.position);
-            
+
             if (Vector3.Angle(transform.forward, dirToPlayer) < _viewAngle / 2)
             {
                 if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, _obstacleMask))

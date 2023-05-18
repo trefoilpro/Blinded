@@ -208,7 +208,7 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             enabled = false;
-            Player.Instance.PlayDeathAnimation(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z));
+            Player.Instance.PlayDeathAnimation(new Vector3(transform.position.x , transform.position.y + 1f, transform.position.z));
             _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfAnimations.KillPlayer);
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Collider _playerCollider;
     [SerializeField] private Rigidbody _playerRigidbody;
     [SerializeField] private PlayerMovementAnimation _playerMovementAnimation;
+    [SerializeField] private Camera _playerCamera;
     
     private Vector3 _startPlayerPosition;
     
@@ -16,6 +18,12 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Update()
+    {
+        Vector3 enemyPosition = new Vector3(32.97f, 2.1f, 23.4f);
+        
     }
 
     public void SetHidden(Transform cupboardTransform = null)
@@ -46,8 +54,14 @@ public class Player : MonoBehaviour
         _firstPersonController.enabled = false;
         
         Quaternion newQuaternion = Quaternion.LookRotation(enemyPosition - transform.position);
-        transform.DORotate(enemyPosition, 0.25f, RotateMode.Fast).From();
-        Debug.Log("newQuaternion = " + newQuaternion);
-        transform.rotation = newQuaternion;
+        
+        Quaternion newQuaternionBody = new Quaternion(0 , newQuaternion.y - 0.2f, 0, newQuaternion.w);
+        Quaternion newQuaternionCamera = new Quaternion(newQuaternion.x , 0, 0, newQuaternion.w);
+        
+        
+        
+        transform.DOLocalRotate(newQuaternionBody.eulerAngles, 0.5f);
+        _playerCamera.transform.DOLocalRotate(newQuaternionCamera.eulerAngles, 0.5f);
+        
     }
 }

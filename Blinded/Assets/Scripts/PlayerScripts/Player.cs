@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -40,8 +41,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void PlayDeathAnimation()
+    public void PlayDeathAnimation(Vector3 enemyPosition)
     {
-        Debug.Log("Player dead");
+        _firstPersonController.enabled = false;
+        
+        Quaternion newQuaternion = Quaternion.LookRotation(enemyPosition - transform.position);
+        transform.DORotate(enemyPosition, 0.25f, RotateMode.Fast).From();
+        Debug.Log("newQuaternion = " + newQuaternion);
+        transform.rotation = newQuaternion;
     }
 }

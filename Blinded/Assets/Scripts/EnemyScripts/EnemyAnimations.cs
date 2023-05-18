@@ -6,16 +6,17 @@ public class EnemyAnimations : MonoBehaviour
 {
     [SerializeField] private Animator _enemyAnimator;
 
-    public enum TypesOfMovement
+    public enum TypesOfAnimations
     {
         Idle,
         Walk,
         Run,
+        KillPlayer,
     }
 
-    private TypesOfMovement _enemyTypeOfMoving = TypesOfMovement.Idle;
+    private TypesOfAnimations _enemyTypeOfMoving = TypesOfAnimations.Idle;
 
-    public void SetEnemyAnimation(TypesOfMovement typesOfMoving)
+    public void SetEnemyAnimation(TypesOfAnimations typesOfMoving)
     {
         if (typesOfMoving == _enemyTypeOfMoving)
             return;
@@ -24,22 +25,27 @@ public class EnemyAnimations : MonoBehaviour
 
         switch (_enemyTypeOfMoving)
         {
-            case TypesOfMovement.Idle:
+            case TypesOfAnimations.Idle:
             {
                 _enemyAnimator.SetBool("IsMoving", false);
                 _enemyAnimator.SetBool("IsRunning", false);
                 break;
             }
-            case TypesOfMovement.Walk:
+            case TypesOfAnimations.Walk:
             {
                 _enemyAnimator.SetBool("IsMoving", true);
                 _enemyAnimator.SetBool("IsRunning", false);
                 break;
             }
-            case TypesOfMovement.Run:
+            case TypesOfAnimations.Run:
             {
                 _enemyAnimator.SetBool("IsMoving", true);
                 _enemyAnimator.SetBool("IsRunning", true);
+                break;
+            }
+            case TypesOfAnimations.KillPlayer:
+            {
+                _enemyAnimator.SetTrigger("KillPlayer");
                 break;
             }
         }

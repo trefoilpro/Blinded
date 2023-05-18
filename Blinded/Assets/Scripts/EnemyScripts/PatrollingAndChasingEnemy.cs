@@ -152,21 +152,21 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
 
     void Stop()
     {
-        _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfMovement.Idle);
+        _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfAnimations.Idle);
         _navMeshAgent.isStopped = true;
         _navMeshAgent.speed = 0;
     }
 
     void Move(float speed)
     {
-        _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfMovement.Walk);
+        _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfAnimations.Walk);
         _navMeshAgent.isStopped = false;
         _navMeshAgent.speed = speed;
     }
 
     private void Run(float speed)
     {
-        _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfMovement.Run);
+        _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfAnimations.Run);
         _navMeshAgent.isStopped = false;
         _navMeshAgent.speed = speed;
     }
@@ -207,7 +207,9 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            enabled = false;
             Player.Instance.PlayDeathAnimation();
+            _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfAnimations.KillPlayer);
         }
     }
 }

@@ -72,6 +72,7 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
 
         _navMeshAgent.isStopped = false;
         _navMeshAgent.speed = _speedWalk;
+        Move(_speedWalk);
         _navMeshAgent.SetDestination(_wayPoints[m_СurrentWayPointIndex].position);
     }
 
@@ -87,7 +88,6 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
         {
             Patroling();
         }
-        //Debug.Log("remainingDistance = " + _navMeshAgent.remainingDistance + " stoppingDistance = " + _navMeshAgent.stoppingDistance);
     }
 
     private void Chasing()
@@ -99,12 +99,15 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
         {
             Run(_speedRun);
             _navMeshAgent.SetDestination(m_PlayerPosition);
+            m_WaitTimeAfterLostPlayer = _waitTimeAfterLostPlayer;
+            
         }
 
 
         //Debug.Log("_navMeshAgent.remainingDistance = " + _navMeshAgent.remainingDistance + " _navMeshAgent.stoppingDistance = " + _navMeshAgent.stoppingDistance);
         if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
         {
+            Stop();
             //Debug.Log("_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance");
             if (m_WaitTimeAfterLostPlayer <= 0 && !m_CaughtPlayer)
             {

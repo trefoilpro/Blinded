@@ -131,8 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorAnimator: {fileID: 7066122062620648927}
-  _callInteractionObjectsList:
-  - {fileID: 0}
+  _room: {fileID: 0}
 --- !u!95 &7066122062620648927
 Animator:
   serializedVersion: 4
@@ -269,6 +268,7 @@ GameObject:
   - component: {fileID: 7315759404937332627}
   - component: {fileID: 3728117492124557395}
   - component: {fileID: 1584272118421249231}
+  - component: {fileID: 9070573872009338161}
   m_Layer: 0
   m_Name: Door1
   m_TagString: Interactable
@@ -370,3 +370,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _doorToggle: {fileID: 1108779814648150629}
+--- !u!208 &9070573872009338161
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145008337356647247}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.002, y: 0.010000001, z: 0.024}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.024}
+  m_TimeToStationary: 0.5

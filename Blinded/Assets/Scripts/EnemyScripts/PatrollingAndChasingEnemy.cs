@@ -78,8 +78,11 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
 
     private void Update()
     {
+        
         EnviromentView();
-
+        
+        
+         
         if (!m_IsPatrol)
         {
             Chasing();
@@ -92,21 +95,27 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
 
     private void Chasing()
     {
+        
+        
         Vector3 dirToPlayer = (Player.Instance.transform.position - transform.position).normalized;
         float dstToPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
 
-        if (!m_CaughtPlayer && !Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, _obstacleMask))
+        if (!m_CaughtPlayer && !Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, _obstacleMask) && !Player.Instance.IsHidden)
         {
             Run(_speedRun);
             _navMeshAgent.SetDestination(m_PlayerPosition);
             m_WaitTimeAfterLostPlayer = _waitTimeAfterLostPlayer;
-            
+            Debug.Log("Physics.Raycast");
         }
+        
+        Debug.Log("_navMeshAgent.destination = " + _navMeshAgent.destination + " Enemy position = " + transform.position + " _navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance = " + (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance) + " _navMeshAgent.remainingDistance = " + _navMeshAgent.remainingDistance + " _navMeshAgent.stoppingDistance = " + _navMeshAgent.stoppingDistance);
 
 
         //Debug.Log("_navMeshAgent.remainingDistance = " + _navMeshAgent.remainingDistance + " _navMeshAgent.stoppingDistance = " + _navMeshAgent.stoppingDistance);
-        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
+        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance && Vector3.Distance(transform.position, _navMeshAgent.destination) <= _navMeshAgent.stoppingDistance)
         {
+            
+            
             Stop();
             //Debug.Log("_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance");
             if (m_WaitTimeAfterLostPlayer <= 0 && !m_CaughtPlayer)

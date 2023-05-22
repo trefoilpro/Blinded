@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private CheckForInteractions _checkForInteractions;
 
     public GameObject GetPlayerCamera() => _playerCamera.gameObject;
+    public void SetCheckForInteractions(bool enable) => _checkForInteractions.enabled = enable;
 
     private Vector3 _startPlayerPosition;
 
@@ -27,9 +28,9 @@ public class Player : MonoBehaviour
 
     
 
-    public void HideInWardrobe(Transform wardrobeTransform)
+    /*public void HideInWardrobe(Transform wardrobeTransform)
     {
-        _checkForInteractions.SetCanInteract(false);
+        
 
         if (!IsHidden)
         {
@@ -42,7 +43,7 @@ public class Player : MonoBehaviour
             _wardrobePlayerAnimation.ComeOutOfWardrobe(wardrobeTransform);
             StartCoroutine(AvoidErrorCoroutine(1.5f,false));
         }
-    }
+    }*/
 
     public void SetHidden(bool isHidden)
     {

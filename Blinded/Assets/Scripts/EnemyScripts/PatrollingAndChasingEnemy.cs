@@ -10,7 +10,7 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
     [SerializeField] private RoomConductor _roomConductor;
     [SerializeField] private EnemyAnimations _enemyAnimations;
     [SerializeField] private NavMeshAgent _navMeshAgent;
-    [SerializeField] private Rigidbody _enemyRigidbody;
+    [SerializeField] private Collider _enemyCollider;
     [SerializeField] private float _speedWalk;
     [SerializeField] private float _speedRun;
     [SerializeField] private float _viewRadius;
@@ -218,13 +218,16 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
+            _enemyCollider.enabled = false;
             KillPlayer();
         }
     }
+
+   
 
     
 
@@ -236,6 +239,7 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
     private IEnumerator KillPlayerAnimationCoroutine()
     {
         Player player = Player.Instance;
+        
         
         enabled = false;
         _navMeshAgent.enabled = false;

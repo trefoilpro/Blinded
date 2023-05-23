@@ -45,7 +45,8 @@ public class EnemyAnimations : MonoBehaviour
             }
             case TypesOfAnimations.KillPlayer:
             {
-                _enemyAnimator.Play("KillPlayer");
+                _enemyAnimator.SetTrigger("KillPlayer");
+                //_enemyAnimator.Play("KillPlayer");
                 break;
             }
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,7 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
     [SerializeField] private RoomConductor _roomConductor;
     [SerializeField] private EnemyAnimations _enemyAnimations;
     [SerializeField] private NavMeshAgent _navMeshAgent;
+    [SerializeField] private Rigidbody _enemyRigidbody;
     [SerializeField] private float _speedWalk;
     [SerializeField] private float _speedRun;
     [SerializeField] private float _viewRadius;
@@ -215,13 +217,67 @@ public class PatrollingAndChasingEnemy : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            enabled = false;
-            Player.Instance.PlayDeathAnimation(new Vector3(transform.position.x , transform.position.y + 1f, transform.position.z));
-            _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfAnimations.KillPlayer);
+            KillPlayer();
         }
+    }
+
+    
+
+    private void KillPlayer()
+    {
+        StartCoroutine(KillPlayerAnimationCoroutine());
+    }
+
+    private IEnumerator KillPlayerAnimationCoroutine()
+    {
+        Player player = Player.Instance;
+        
+        enabled = false;
+        _navMeshAgent.enabled = false;
+        _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfAnimations.Idle);
+            
+        Quaternion newQuaternion = Quaternion.LookRotation(player.transform.position - transform.position);
+            
+        Quaternion newEnemyQuaternion = new Quaternion(0, newQuaternion.eulerAngles.y + 55, 0, newQuaternion.w);
+            
+        gameObject.transform.DORotate(newEnemyQuaternion.eulerAngles, 0.5f);
+        //_enemyRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            
+
+        player.SetFirstPersonController(false);
+        player.GetPlayerAnimation().SetPlayerAnimation(PlayerMovementAnimation.TypesOfMovement.Idle);
+        player.GetPlayerRigidbody().constraints = RigidbodyConstraints.FreezeAll;
+        
+        RaycastHit hit;
+        
+        
+        if (Physics.Raycast(player.transform.position, Vector3.down, out hit))
+        {
+            hit.point = new Vector3(hit.point.x, hit.point.y + 1f, hit.point.z);
+            Debug.Log("hit.point = " + hit.point);
+            player.transform.DOMove(hit.point, 0.2f);
+        }
+
+        yield return new WaitForSeconds(0.21f);
+        
+        Vector3 newEnemyPosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+        
+        newQuaternion = Quaternion.LookRotation(newEnemyPosition - player.transform.position);
+
+        Quaternion newQuaternionBody = new Quaternion(0, newQuaternion.y, 0, newQuaternion.w);
+        Quaternion newQuaternionCamera = new Quaternion(newQuaternion.x, 0, 0, newQuaternion.w);
+
+
+        player.transform.DOLocalRotate(newQuaternionBody.eulerAngles, 0.5f);
+        player.GetPlayerCamera().transform.DOLocalRotate(newQuaternionCamera.eulerAngles, 0.5f);
+            
+        yield return new WaitForSeconds(0.5f);
+        
+        _enemyAnimations.SetEnemyAnimation(EnemyAnimations.TypesOfAnimations.KillPlayer);
     }
 }

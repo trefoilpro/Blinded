@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
 
     public GameObject GetPlayerCamera() => _playerCamera.gameObject;
     public void SetCheckForInteractions(bool enable) => _checkForInteractions.enabled = enable;
+    public void SetFirstPersonController(bool enable) => _firstPersonController.enabled = enable;
+    public Rigidbody GetPlayerRigidbody() => _playerRigidbody;
+    public PlayerMovementAnimation GetPlayerAnimation() => _playerMovementAnimation;
 
     private Vector3 _startPlayerPosition;
 
